@@ -8,12 +8,13 @@ var APIKEY = "6ee25636d25df9899ed46e80a13383ff";
 var imageTemplate = "https://image.tmdb.org/t/p/w300";
 var movieIdlink = `https://api.themoviedb.org/3/movie/343611?api_key=${APIKEY}`;
 var page = 1;
-
+// liked movies thats added to watchlist
 let clonedTag = undefined;
 var allClones = [];
 var watchListBody = document.querySelector(".watchlist-body");
 var watchList = document.querySelector(".watchlist");
 var watchListInner = document.querySelector(".watchList-inner");
+// close button to close watchlist
 var closeWatchList = document.querySelector(".delete");
 var movieId;
 
@@ -76,7 +77,7 @@ let random = () => {
   randomNumber2 = Math.floor(Math.random() * yearsList.length);
 };
 random();
-// Loops through genre data and sets options for select elment
+// Loops through genre data and sets options for select element
 genredata.forEach(elem => {
   var opt = document.createElement("option");
   opt.value = elem.id;
@@ -84,6 +85,7 @@ genredata.forEach(elem => {
   genre.appendChild(opt);
 });
 
+// function to fetch movies from API
 async function getMovies(genres, year) {
   let response = await axios
     .get(
@@ -103,7 +105,7 @@ async function getMovies(genres, year) {
 // request movies (Movies that displays on load screen)
 getMovies(genredata[randomNumber].id, yearsList[randomNumber2]);
 
-// second request to get more details on a specific movie
+// second request to get more details on a specific movie when clicking more info
 async function getMoreDetails() {
   let responce = await axios.get(
     `https://api.themoviedb.org/3/movie/${movieId}?api_key=${APIKEY}`
@@ -112,12 +114,14 @@ async function getMoreDetails() {
   popUpCardInfo(responce.data);
 }
 
-// form submits data
+// form submits data to fetch movies from API
 form.addEventListener("submit", async function(e) {
   e.preventDefault();
 
-  getMovies(genre.value, years.value);
-  contain.innerHTML = "";
+  if (genre.value != "" && years.value != "") {
+    getMovies(genre.value, years.value);
+    contain.innerHTML = "";
+  }
 });
 
 // Creates movie boxes for DOM
@@ -219,6 +223,7 @@ function popUpCardInfo(movieDetails) {
   popUpCardContainer.appendChild(card);
 }
 
+// closes popup card when clicking outside of it
 body.addEventListener("click", function(e) {
   if (card != undefined) {
     if (!card.contains(e.target)) {
@@ -227,6 +232,7 @@ body.addEventListener("click", function(e) {
   }
 });
 
+// goes to previous page of movies on click
 arrowBack.addEventListener("click", async function() {
   if (page != 1) {
     page--;
@@ -241,6 +247,7 @@ arrowBack.addEventListener("click", async function() {
   }
 });
 
+// goes to next page of movies on click
 arrowForward.addEventListener("click", async function() {
   page++;
   var movies = await getMovies(genre.value, years.value).catch(res => {
@@ -252,6 +259,8 @@ arrowForward.addEventListener("click", async function() {
   movieDomCreator(movies);
   pageIndicator.innerText = `page ${page}`;
 });
+
+// displays watchlist
 watchList.addEventListener("click", function() {
   watchListBody.classList.add("zIndex");
   watchListBody.style.height = "100vh";
