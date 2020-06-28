@@ -13,5 +13,6 @@
 
 # Dependencies 
 - This project has no dependecies and was made with vanilla js only.
+- I am using themoviedatabase API for this project
 
 
