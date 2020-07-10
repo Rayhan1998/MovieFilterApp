@@ -3,7 +3,6 @@
 // var allgeres = https://api.themoviedb.org/3/genre/movie/list?api_key=${APIKEY}&language=en-US
 
 //  for searching only link https://api.themoviedb.org/3/search/movie?api_key=${APIKEY}&query=${search}
-
 var APIKEY = "6ee25636d25df9899ed46e80a13383ff";
 var imageTemplate = "https://image.tmdb.org/t/p/w300";
 var movieIdlink = `https://api.themoviedb.org/3/movie/343611?api_key=${APIKEY}`;
